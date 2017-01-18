@@ -128,9 +128,10 @@ void ofxGifEncoder::threadedFunction() {
 }
 
 void ofxGifEncoder::doSave() {
-	// create a multipage bitmap
-	FIMULTIBITMAP *multi = FreeImage_OpenMultiBitmap(FIF_GIF, ofToDataPath(fileName).c_str(), TRUE, FALSE);
-	for(int i = 0; i < frames.size(); i++ ) {
+    // create a multipage bitmap
+    string path = ofToDataPath(fileName, true);
+    FIMULTIBITMAP *multi = FreeImage_OpenMultiBitmap(FIF_GIF, path.c_str(), TRUE, FALSE);
+    for(int i = 0; i < frames.size(); i++ ) {
         ofxGifFrame * currentFrame = frames[i];
         processFrame(currentFrame, multi);
     }
