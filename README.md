@@ -4,7 +4,8 @@ Export animated gifs from openframeworks.
 
 ![Shameless plug](http://ofxgif.jesusgollonet.com/img/plug1.gif)
 
-Tested with [openframeworks](http://openframeworks.cc/) 0.8.1 osx. 
+Tested with [openframeworks](http://openframeworks.cc/) 0.8.1 osx.
+Updated to 0.9.8 by @hamoid .
 
 ___
 
@@ -35,7 +36,7 @@ gifEncoder.setDitherMode(OFX_GIF_DITHER_BAYER4x4);
 then add frames, either as ofImages or unsigned char * 
 
 ```C++
-gifEncoder.addFrame(foo.getPixels(), frameW, frameH);
+gifEncoder.addFrame(yourOfImage, delayInMilliseconds;
 ```
 
 when you're ready to save
