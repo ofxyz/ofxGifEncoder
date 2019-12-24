@@ -91,7 +91,7 @@ void ofxGifEncoder::setDitherMode(int _ditherMode){
 }
 
 void ofxGifEncoder::setFrameDuration(float _duration){
-    for (int i = 0; i < frames.size(); i++) {
+    for (unsigned int i = 0; i < frames.size(); i++) {
         frames[i]->duration = _duration;
     }
 }
@@ -131,7 +131,7 @@ void ofxGifEncoder::doSave() {
     // create a multipage bitmap
     string path = ofToDataPath(fileName, true);
     FIMULTIBITMAP *multi = FreeImage_OpenMultiBitmap(FIF_GIF, path.c_str(), TRUE, FALSE);
-    for(int i = 0; i < frames.size(); i++ ) {
+    for(unsigned int i = 0; i < frames.size(); i++ ) {
         ofxGifFrame * currentFrame = frames[i];
         processFrame(currentFrame, multi);
     }
@@ -143,7 +143,7 @@ void ofxGifEncoder::calculatePalette(FIBITMAP * bmp){
     RGBQUAD *pal = FreeImage_GetPalette(bmp);
     
 	palette.clear();
-    for (int i = 0; i < 256; i++) {
+    for (unsigned int i = 0; i < 256; i++) {
         palette.push_back(ofColor(pal[i].rgbRed, pal[i].rgbGreen, pal[i].rgbBlue));
         ofLog() << palette.at(i);
     }
@@ -155,7 +155,7 @@ int ofxGifEncoder::getClosestToGreenScreenPaletteColorIndex(){
     float minDistance = 100000;
     int closestIndex = 0;
     ofVec3f greenScreenVec(greenScreenColor.r, greenScreenColor.g, greenScreenColor.b);
-    for (int i = 0; i < palette.size(); i++) {
+    for (unsigned int i = 0; i < palette.size(); i++) {
         
         ofVec3f currentVec(palette.at(i).r, palette.at(i).g, palette.at(i).b);
         float currentDistance = currentVec.distance(greenScreenVec);
@@ -194,9 +194,7 @@ void ofxGifEncoder::processFrame(ofxGifFrame * frame, FIMULTIBITMAP *multi){
                                        frame->bitsPerPixel,
                                        0, 0, 0, true // in of006 this (topdown) had to be false.
                                        );
-    
-    FIBITMAP * bmpConverted;
-    
+
 #ifdef TARGET_LITTLE_ENDIAN
     swapRgb(frame);
 #endif
@@ -265,7 +263,7 @@ ofxGifEncoder::ofxGifFrame * ofxGifEncoder::convertTo24BitsWithGreenScreen(ofxGi
                       frame->pixels[(j * width + i) * 4 + 2],
                       frame->pixels[(j * width + i) * 4 + 3]
                       );
-            
+
             float normalAlpha = c.a / 255.f;
             float inverseAlpha = 1.f - normalAlpha ;
 
@@ -274,12 +272,12 @@ ofxGifEncoder::ofxGifFrame * ofxGifEncoder::convertTo24BitsWithGreenScreen(ofxGi
                              c.g * normalAlpha + (otherColor.g * inverseAlpha),
                              c.b * normalAlpha + (otherColor.b *inverseAlpha)
                              );
-            
+
             newPixels[(j * width + i) * 3 + 0] = newColor.r;
             newPixels[(j * width + i) * 3 + 1] = newColor.g;
             newPixels[(j * width + i) * 3 + 2] = newColor.b;
         }
-       
+
     }
 
     ofxGifFrame * newFrame = ofxGifEncoder::createGifFrame(newPixels, width, height, 24, frame->duration);
@@ -314,11 +312,9 @@ void ofxGifEncoder::reset() {
         ofLog(OF_LOG_WARNING, "ofxGifEncoder is saving. wait for OFX_GIF_SAVE_FINISHED to reset");
         return;
     }
-    for (int i = 0; i < frames.size(); i++) {
+    for (unsigned int i = 0; i < frames.size(); i++) {
         delete frames[i]->pixels;
         delete frames[i];
     }
     frames.clear();
 }
-
-
